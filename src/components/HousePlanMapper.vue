@@ -6,7 +6,7 @@
         <div id="plan-mapper-container">
             <canvas id="plan-mapper-canvas" @mousemove="showCoordinates"></canvas>
             <img usemap="#map" id="plan-mapper-img" :src="floor_image()" alt="" v-if="loaded">
-            <div id="plan-mapper-infobg" v-if="clicked_area_id!==null" @click="reset_clicked">
+            <div id="plan-mapper-infobg" v-show="clicked_area_id!==null" @click="reset_clicked">
                 <div id="plan-mapper-info" @click="reset_clicked">
                     <h3>Помешение № {{clicked_group_key}}</h3>
                     <p>{{clicked_group_text}}</p>
@@ -16,7 +16,7 @@
         <map name="map">
             <area href="#" v-for="(a,i) in areas" :key="i" :alt="group_title(a['group'])"
                   :title="group_title(a['group'])" :shape="a['shape']" :coords="a['coords']"
-                  @click="_click(i)" @mouseenter="_mouseenter(i)" @mouseleave="_mouseleave(i)" />
+                  @click.prevent="_click(i)" @mouseenter="_mouseenter(i)" @mouseleave="_mouseleave(i)" />
         </map>
         <br>
     </div>
@@ -454,7 +454,7 @@
                 this.mouseY = e.offsetY;
             },
             _click: function(i){
-                //('_click', i)
+                //console.log('_click', i)
                 this.clicked_area_id = i;
                 this.clicked_area_key = this.all_areas[this.floor][i]['title'];
                 this.clicked_group_key = this.all_areas[this.floor][i]['group'];
@@ -626,6 +626,7 @@
         width:690px;
         height:765px;
         position:relative;
+        margin: 0 auto 0 auto;
     }
     img#plan-mapper-img {
         width:690px;
